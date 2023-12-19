@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <!-- link css -->
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- font awesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Inter:wght@300;400&family=Josefin+Sans&family=League+Spartan:wght@400;500&family=Lexend&family=Montserrat:wght@200&family=Mynerve&family=Noto+Sans+TC:wght@500&family=Noto+Sans:wght@300&family=Nunito:wght@300&family=Poppins&family=Prompt:ital,wght@0,200;1,200&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+        
+            
+                
+                    <div class="card">
+                        <div class="search">
+                            <input id="input_name" type="text" placeholder="Search">
+                            <button onclick="search()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        <div class="weather" id="result">
+                            
+                        </div>
+                    </div>
+                
+            
+            
+        
+    
+</body>
+
+<script>
+
+    const search = () =>{
+        const cityName = input_name.value
+        console.log(cityName);
+        if(cityName){
+           fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=ee48bebcf81086f8e545cdb87ff8290e`)
+                .then((response) => {
+                    response.json().then((data) => {
+                        let weather = data.weather
+                        console.log(data);
+                        const  name  = data.name; 
+                        result.innerHTML = `<h2 class="city">Weather in ${name}</h2>
+                            <div class="temp"><h1>${parseInt(data.main.temp - 273)}°C</h1></div>
+                            ${weather.map((item)=>
+                                    `
+                                     <div><img src="http://openweathermap.org/img/w/${item.icon}.png"></div>`
+                                    )}
+                            <div class="nature">${weather.map((item)=>`${item.description}`)}</div>
+                            <div class="humidity">Humidity : ${data.main.humidity}%</div>
+                            <div class="pressure">Wind speed :${data.wind.speed}km/h</div>`
+                            document.body.style.backgroundImage =` url('https://source.unsplash.com/1600x900/?${data.name}')`
+                            
+                    }
+                     )
+                   
+                })
+        }
+        else{
+            alert('Please enter valid input')
+        }
+        
+    }
+</script>
+
+
+</html>
